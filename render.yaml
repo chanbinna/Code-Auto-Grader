@@ -1,0 +1,31 @@
+# Render service manifest (template)
+# Usage: edit this file with your repo name and any required settings,
+# then use Render's dashboard to connect the repo and it will read this manifest.
+# Replace <your-repo> and <your-branch> if needed.
+services:
+  - type: web
+    name: code-auto-grader-backend
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn -k uvicorn.workers.UvicornWorker server.main:app --bind 0.0.0.0:$PORT
+    repo: https://github.com/<your-username>/Code-Auto-Grader
+    branch: main
+    rootDir: server
+    envVars:
+      - key: ALLOWED_ORIGINS
+        value: "https://your-vercel-app.vercel.app,http://localhost:5173"
+      # - key: DATABASE_URL
+      #   value: "postgresql://user:pass@host:5432/dbname"
+      # - key: SUBMISSIONS_DIR
+      #   value: "/data/submissions"
+    disk:
+      - name: submissions-disk
+        sizeGB: 5
+        mountPath: /data
+
+# Notes:
+# - This is a template manifest. Render may still require you to configure env vars in their dashboard
+#   (especially DATABASE_URL if using a managed Postgres) and to attach the persistent disk.
+# - If you don't want a persistent disk, remove the 'disk' section; however, submitted files
+#   will then live on ephemeral instance storage and may be lost on redeploy.
