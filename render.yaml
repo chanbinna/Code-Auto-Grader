@@ -10,7 +10,8 @@ services:
     buildCommand: pip install -r requirements.txt
   # Change directory into `server` before importing the app so module imports work
   # regardless of the process CWD. This imports `main:app` from the `server` folder.
-  startCommand: gunicorn -k uvicorn.workers.UvicornWorker main:app --chdir server --bind 0.0.0.0:$PORT
+  # Use the repo-level start.sh which will cd into `server` if present
+  startCommand: sh start.sh
     repo: https://github.com/<your-username>/Code-Auto-Grader
     branch: main
     rootDir: server
