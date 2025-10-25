@@ -116,8 +116,19 @@ async def submit(student_uuid: str, problem_id: str, file: UploadFile = File(...
     with open(test_cases_file, "r") as f:
         test_cases = json.load(f)
 
+    # determine entry function name from problem metadata (fallback to 'solve')
+    entry_name = 'solve'
+    pj = os.path.join(problem_path, 'problem.json')
+    if os.path.exists(pj):
+        try:
+            with open(pj, 'r') as pf:
+                pd = json.load(pf)
+            entry_name = pd.get('entry_point') or pd.get('function') or entry_name
+        except Exception:
+            pass
+
     # run tests
-    result = utils.run_submission_tests(saved_path, test_cases)
+    result = utils.run_submission_tests(saved_path, test_cases, entry_name)
 
     # store submission
     submission = crud.create_submission(db, student.id, problem_id, saved_name, result)

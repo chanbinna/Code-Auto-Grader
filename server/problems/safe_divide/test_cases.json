@@ -1,0 +1,12 @@
+[
+  {"input": [10, 2], "expected": 5.0},
+  {"input": [9, 3], "expected": 3.0},
+  {"input": [5, 0], "expected": "Error"},
+  {"input": [0, 5], "expected": 0.0},
+  {"input": [7, -1], "expected": -7.0},
+  {"input": [-10, 2], "expected": -5.0},
+  {"input": [8, 4], "expected": 2.0},
+  {"input": [100, 10], "expected": 10.0},
+  {"input": [10, 5], "expected": 2.0},
+  {"input": [3, 0], "expected": "Error"}
+]

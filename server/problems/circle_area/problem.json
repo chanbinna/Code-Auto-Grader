@@ -1,0 +1,11 @@
+{
+  "id": "circle_area",
+  "title": "Circle Area Calculator",
+  "difficulty": "Easy",
+  "description": "Write a function `circle_area(radius)` that returns the area of a circle using π × r². Use `math.pi` and round to 2 decimal places.",
+   "entry_point": "circle_area",
+  "examples": [
+    {"input": [1], "output": 3.14},
+    {"input": [3], "output": 28.27}
+  ]
+}

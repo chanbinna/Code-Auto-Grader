@@ -1,0 +1,11 @@
+{
+  "id": "safe_divide",
+  "title": "Safe Division",
+  "difficulty": "Medium",
+  "description": "Write a function `safe_divide(a, b)` that returns a / b. If b is 0, return the string 'Error'. Use early return.",
+  "entry_point": "safe_divide",
+  "examples": [
+    {"input": [10, 2], "output": 5.0},
+    {"input": [5, 0], "output": "Error"}
+  ]
+}

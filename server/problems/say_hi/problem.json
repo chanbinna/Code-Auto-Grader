@@ -1,0 +1,11 @@
+{
+  "id": "say_hi",
+  "title": "Say Hi Function",
+  "difficulty": "Easy",
+  "description": "Write a function `say_hi(name)` that prints 'Hi, <name>!' (with the exclamation mark).",
+    "entry_point": "say_hi",
+  "examples": [
+    {"input": ["Alice"], "output": "Hi, Alice!"},
+    {"input": ["Bob"], "output": "Hi, Bob!"}
+  ]
+}

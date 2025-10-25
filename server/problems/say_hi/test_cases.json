@@ -1,0 +1,12 @@
+[
+  {"input": ["Alice"], "expected": "Hi, Alice!"},
+  {"input": ["Bob"], "expected": "Hi, Bob!"},
+  {"input": ["Charlie"], "expected": "Hi, Charlie!"},
+  {"input": ["Python"], "expected": "Hi, Python!"},
+  {"input": ["World"], "expected": "Hi, World!"},
+  {"input": ["Jane"], "expected": "Hi, Jane!"},
+  {"input": ["Chanbin"], "expected": "Hi, Chanbin!"},
+  {"input": ["Student"], "expected": "Hi, Student!"},
+  {"input": ["Friend"], "expected": "Hi, Friend!"},
+  {"input": ["Turtle"], "expected": "Hi, Turtle!"}
+]

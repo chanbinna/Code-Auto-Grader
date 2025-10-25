@@ -1,5 +1,0 @@
-[
-  {"input": ["hello world"], "expected": "world hello"},
-  {"input": ["a b c"], "expected": "c b a"},
-  {"input": ["single"], "expected": "single"}
-]

@@ -1,0 +1,11 @@
+{
+  "id": "roll_dice",
+  "title": "Dice Roller",
+  "difficulty": "Medium",
+  "description": "Write a function `roll_dice(n)` that simulates rolling a six-sided dice `n` times and returns the total sum. Use the `random` module’s `randint(1, 6)`.",
+  "entry_point": "roll_dice",
+  "examples": [
+    {"input": [1], "output": "Random number between 1 and 6"},
+    {"input": [3], "output": "Random number between 3 and 18"}
+  ]
+}
