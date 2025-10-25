@@ -13,10 +13,24 @@ SUBMISSIONS_DIR = os.environ.get("SUBMISSIONS_DIR", os.path.join(BASE_DIR, "subm
 
 app = FastAPI(title="Code Auto Grader")
 
+# Configure CORS dynamically from the ALLOWED_ORIGINS env var (comma-separated).
+# If not provided, default to localhost dev origin. If ALLOWED_ORIGINS contains
+# a single '*' entry we allow all origins but disable credentials because browsers
+# disallow '*' with credentials.
+allowed = os.environ.get("ALLOWED_ORIGINS")
+if allowed:
+    origins = [o.strip() for o in allowed.split(",") if o.strip()]
+else:
+    origins = ["http://localhost:5173"]
+
+allow_credentials = True
+if len(origins) == 1 and origins[0] == "*":
+    allow_credentials = False
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "*"],
-    allow_credentials=True,
+    allow_origins=origins,
+    allow_credentials=allow_credentials,
     allow_methods=["*"],
     allow_headers=["*"],
 )
