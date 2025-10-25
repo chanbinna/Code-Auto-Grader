@@ -8,7 +8,9 @@ services:
     env: python
     plan: free
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn -k uvicorn.workers.UvicornWorker server.main:app --bind 0.0.0.0:$PORT
+  # Change directory into `server` before importing the app so module imports work
+  # regardless of the process CWD. This imports `main:app` from the `server` folder.
+  startCommand: gunicorn -k uvicorn.workers.UvicornWorker main:app --chdir server --bind 0.0.0.0:$PORT
     repo: https://github.com/<your-username>/Code-Auto-Grader
     branch: main
     rootDir: server
@@ -23,7 +25,6 @@ services:
       - name: submissions-disk
         sizeGB: 5
         mountPath: /data
-
 # Notes:
 # - This is a template manifest. Render may still require you to configure env vars in their dashboard
 #   (especially DATABASE_URL if using a managed Postgres) and to attach the persistent disk.
