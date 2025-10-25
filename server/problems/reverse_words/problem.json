@@ -1,0 +1,10 @@
+{
+  "id": "reverse_words",
+  "title": "Reverse Words",
+  "difficulty": "Easy",
+  "description": "Given a string containing words separated by spaces, return a string with the words in reverse order. Preserve the words themselves and single spaces between them.",
+  "examples": [
+    {"input": "hello world", "output": "world hello", "explanation": "two words"},
+    {"input": "a b c", "output": "c b a", "explanation": "multiple words"}
+  ]
+}

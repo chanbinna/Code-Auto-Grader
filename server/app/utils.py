@@ -1,0 +1,132 @@
+import os
+import json
+import tempfile
+import subprocess
+import sys
+import shutil
+from typing import List
+
+
+RUN_TIMEOUT = 3  # seconds per test
+
+
+RUNNER_TEMPLATE = '''
+import runpy, sys, json, traceback
+
+submission_path = sys.argv[1]
+tc_json = sys.argv[2]
+tc = json.loads(tc_json)
+
+g = {}
+try:
+    # run the submission as a script and capture its globals
+    g = runpy.run_path(submission_path)
+    if 'solve' not in g:
+        print(json.dumps({"ok": False, "error": "No solve() function found"}))
+        sys.exit(2)
+    solve = g['solve']
+    inp = tc.get('input')
+    # if input is a list, expand as args
+    if isinstance(inp, list):
+        out = solve(*inp)
+    else:
+        out = solve(inp)
+    print(json.dumps({"ok": True, "output": out}))
+except Exception:
+    print(json.dumps({"ok": False, "error": traceback.format_exc()}))
+    sys.exit(3)
+'''
+
+
+def run_submission_tests(submission_path: str, test_cases: List[dict]):
+    results = {
+        "passed": 0,
+        "failed": 0,
+        "total": len(test_cases),
+        "errors": [],
+        "per_test": [],
+        "status": "finished",
+    }
+
+    # create a temp runner file
+    tmpdir = tempfile.mkdtemp(prefix="grader_")
+    try:
+        runner_path = os.path.join(tmpdir, "_runner.py")
+        with open(runner_path, "w") as f:
+            f.write(RUNNER_TEMPLATE)
+
+        for i, tc in enumerate(test_cases, start=1):
+            try:
+                tc_json = json.dumps(tc)
+                proc = subprocess.run([sys.executable, runner_path, submission_path, tc_json], capture_output=True, text=True, timeout=RUN_TIMEOUT)
+                stdout = proc.stdout.strip()
+                stderr = proc.stderr.strip()
+                if proc.returncode != 0:
+                    results["failed"] += 1
+                    results["per_test"].append({
+                        "index": i,
+                        "ok": False,
+                        "input": tc.get("input"),
+                        "stdout": stdout,
+                        "stderr": stderr,
+                        "error": stderr or stdout,
+                    })
+                    results["errors"].append({"index": i, "error": stderr or stdout})
+                    continue
+                # parse stdout JSON
+                try:
+                    parsed = json.loads(stdout)
+                except Exception:
+                    results["failed"] += 1
+                    results["per_test"].append({"index": i, "ok": False, "stdout": stdout, "stderr": stderr})
+                    results["errors"].append({"index": i, "error": "Invalid runner output", "raw": stdout})
+                    continue
+
+                if not parsed.get("ok"):
+                    results["failed"] += 1
+                    results["per_test"].append({
+                        "index": i,
+                        "ok": False,
+                        "input": tc.get("input"),
+                        "error": parsed.get("error"),
+                        "stdout": stdout,
+                        "stderr": stderr,
+                    })
+                    results["errors"].append({"index": i, "error": parsed.get("error")})
+                    continue
+
+                output = parsed.get("output")
+                expected = tc.get("expected")
+                if output == expected:
+                    results["passed"] += 1
+                    results["per_test"].append({
+                        "index": i,
+                        "ok": True,
+                        "input": tc.get("input"),
+                        "output": output,
+                        "expected": expected,
+                    })
+                else:
+                    results["failed"] += 1
+                    results["per_test"].append({
+                        "index": i,
+                        "ok": False,
+                        "input": tc.get("input"),
+                        "output": output,
+                        "expected": expected,
+                    })
+            except subprocess.TimeoutExpired:
+                results["failed"] += 1
+                results["errors"].append({"index": i, "error": "timeout"})
+                results["per_test"].append({"index": i, "ok": False, "error": "timeout"})
+            except Exception as e:
+                results["failed"] += 1
+                results["errors"].append({"index": i, "error": str(e)})
+                results["per_test"].append({"index": i, "ok": False, "error": str(e)})
+
+        return results
+    finally:
+        try:
+            shutil.rmtree(tmpdir)
+        except Exception:
+            pass

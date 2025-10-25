@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Light mode: softer iOS-like light theme */
+  --bg-100: #ffffff;
+  --bg-200: #f8fafc;
+  --card-bg: #ffffff;
+  --muted: #6b7280;
+  --text: #111827;
+  --surface-2: #f1f5f9;
+  --ios-blue: #0a84ff;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  /* Use a solid white background to keep the page uniform when scrolling */
+  background-color: var(--bg-100);
+  color: var(--text);
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    "Noto Sans",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+    env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+/* container helper */
+.app-container {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 1.25rem;
+}
+
+.ios-nav {
+  /* Use a solid background so the nav color remains consistent while scrolling */
+  background: var(--bg-100);
+  /* keep subtle blur off to avoid showing different backgrounds under the bar */
+  border-bottom: 1px solid rgba(15, 23, 42, 0.04);
+  color: var(--text);
+}
+
+.ios-card {
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  background: linear-gradient(180deg, #ffffff, #fbfdff);
+  border: 1px solid rgba(15, 23, 42, 0.03);
+}
+
+.ios-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(180deg, #1673ff, #0b5ed7);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  box-shadow: 0 8px 24px rgba(13, 80, 200, 0.12);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.ios-button:hover {
+  transform: translateY(-1px);
+}
+
+.ios-pill {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  background-color: #f3f4f6;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.mono-code {
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Segoe UI Mono",
+    monospace;
+}
+
+/* badges */
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+.badge-success {
+  background: #ecfdf5;
+  color: #065f46;
+}
+.badge-fail {
+  background: #fff1f2;
+  color: #9f1239;
+}
+.muted {
+  color: var(--muted);
+}
+
+/* small utilities */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+.detail-pre {
+  background: #f8fafc;
+  padding: 0.5rem;
+  border-radius: 8px;
+  font-family: ui-monospace, Menlo, monospace;
+  color: #0f172a;
+}
+
+/* Ensure consistent spacing between history list items even if other rules interfere */
+.history-list > * + * {
+  margin-top: 0.75rem; /* 12px */
+}
