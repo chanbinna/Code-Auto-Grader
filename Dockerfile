@@ -17,10 +17,7 @@ COPY server/ ./server/
 COPY --from=client-build /app/client/dist ./server/static
 
 WORKDIR /app/server
-RUN python -m venv .venv
-ENV PATH="/app/server/.venv/bin:$PATH"
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
 ENV PYTHONUNBUFFERED=1
 EXPOSE 8000
